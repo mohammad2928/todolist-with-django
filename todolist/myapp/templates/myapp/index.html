@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> TODO LIST</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+<!--     <link rel="stylesheet" href="bootstrap-5.0.1-dist/css/bootstrap.min.css" type="text/css"/>
+    <script src="bootstrap-5.0.1-dist/js/bootstrap.min.js"></script> -->
+    
+<!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+</head>
+ <body>
+     
+    <div class="container"> 
+        
+
+        
+        
+        <div class="row">
+            <div class="col-md-12">
+                <h1> TODO Apps  </h1>
+            </div>
+        </div>
+        
+       <div class="row">
+            <div class="col-md-12">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="text" id="name" name="name">
+                    <input type="text" id="priority" name="priority">
+                    <input type="submit">
+                </form>
+             </div>
+        </div>
+        
+        </br>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col"> Task ID </th>
+                            <th scope="col"> Name </th>
+                            <th scope="col"> Priority </th>
+                            <th scope="col"> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %}
+                        <tr>
+                            <th scope="row">{{task.id}}</th>
+                            <td> {{task.name}}</td>
+                            <td> {{task.priority}}</td>
+                            <td> <a class = "btn btn-primary" href="delete/{{task.id}}"> Done </a></td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+  
+                </table>
+            </div>
+        </div>
+    </div>
+    
+ </body>
+    
+</html>
