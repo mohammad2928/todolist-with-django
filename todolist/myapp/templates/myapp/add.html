@@ -11,21 +11,59 @@
 <!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 </head>
  <body>
-     
+
+
     <div class="container"> 
-        <div class="row">
-            <div class="col-md-12">
-                <form method="POST">
-                    {% csrf_token %}
-                    <input type="text" id="name" name="name">
-                    <input type="text" id="priority" name="priority">
-                    <input type="submit">
-                </form>
-            </div>
+    </br> </br>
+    <div class="row justify-content-between">
+        <div class="navbar bg-info text-muted justify-content-center text-primary w-50">
+            <h5> Task creation form</h5>
+        </div>
+        <button class="btn btn-secondary btn-sm w-25" onclick="goBack()" type="button">Go to Back </button>
+    </div>
+     </br> 
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="Task-Name">Task name</label>
+          <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp" placeholder="Title of the task" required>
         </div>
 
-    </div>
+        <div class="form-groups">
+          <label for="priority">priority</label>
+          <input type="integer" class="form-control" id="priority" name="priority" placeholder="Task priority">
+          <small id="emailHelp" class="form-text text-muted">Please chose an integer number between 1 (low, default) to 10 (very high) </small>
+        </div>
+        </br>
+
+        <div class="form-group date" data-provide="datepicker">
+            <label for="priority">End Date</label>
+            <input type="date"  class="form-control" id="end_date" name="end_date">
+
+            <small id="emailHelp" class="form-text text-muted">Expected date for ending the tsk </small>
+        </div>
+   
+
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Task description</label>
+            <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+            <small id="emailHelp" class="form-text text-muted">description about your task </small>
+        </div>
+        </br>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+   </div>
+
+
     
  </body>
-    
+
+ <script>
+    function goBack() {
+      window.history.back();
+    }
+</script>
+
 </html>

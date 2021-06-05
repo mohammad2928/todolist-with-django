@@ -2,38 +2,77 @@
 <html lang="en">
 <head>
     <title> TODO LIST</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 <!--     <link rel="stylesheet" href="bootstrap-5.0.1-dist/css/bootstrap.min.css" type="text/css"/>
     <script src="bootstrap-5.0.1-dist/js/bootstrap.min.js"></script> -->
     
 <!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<style>
+    /* Style the input field */
+    #myInput {
+      padding: 20px;
+      margin-top: -6px;
+      border: 0;
+      border-radius: 0;
+      background: #f1f1f1;
+    }
+    </style>
+
 </head>
  <body>
      
     <div class="container"> 
         
+        <!-- hiden forms -->
+        <form class="d-none" method="POST" id="done_form">
+            {% csrf_token %}
+            <input id="done" type="text" name="done" value="{{task.id}}">
+        </form>
 
-        
-        
+        <!-- hidden form -->>
+          <form class="d-none" method="POST">
+            {% csrf_token %}
+
+                <input type="text" name="change_state" value="change_state" id="change_state">
+          </form>
+
+         <!-- end hidden forms -->
+          
         <div class="row">
             <div class="col-md-12">
                 <h1> TODO Apps  </h1>
             </div>
         </div>
         
-       <div class="row">
-            <div class="col-md-12">
-                <form method="POST">
-                    {% csrf_token %}
-                    <input type="text" id="name" name="name">
-                    <input type="text" id="priority" name="priority">
-                    <input type="submit">
-                </form>
-             </div>
-        </div>
         
+    </br>
+        <div class="row">
+            <div class="col-md-12 row justify-content-between">
+                <a class = "btn btn-primary" href="add"> Create A New Task </a>
+
+                <form method="POST" id="filter_post">
+                    {% csrf_token %}
+                    <div class="form-group ">
+                      <select class="form-control btn-secondary" id="filter" name="filter">
+                        <option value="#">Sort/Filter </option>
+                        <option value="end_date">End date</option>
+                        <option value="start_date">Start date</option>
+                        <option value="priority">Priority</option>
+                        <option value="dones">Done tasks</option>
+                        <option value="remains">Remain tasks</option>
+                      </select>
+                    </div>
+                  </form>
+
+
+            </div>
+        </div>
+
         </br>
         
         <div class="row">
@@ -44,16 +83,37 @@
                             <th scope="col"> Task ID </th>
                             <th scope="col"> Name </th>
                             <th scope="col"> Priority </th>
+                            <th scope="col"> Creation </th>
+                            <th scope="col"> End </th>
+                            <th scope="col"> Status </th>
+                            <th scope="col"> Update </th>
                             <th scope="col"> Action </th>
                         </tr>
                     </thead>
                     <tbody>
+                        
                         {% for task in tasks %}
                         <tr>
                             <th scope="row">{{task.id}}</th>
                             <td> {{task.name}}</td>
                             <td> {{task.priority}}</td>
-                            <td> <a class = "btn btn-primary" href="delete/{{task.id}}"> Done </a></td>
+                            <td> {{task.creation_date}}</td>
+                            <td> {{task.end_date}}</td>
+                            <td> {{task.status}}</td>
+                            <td> <a class = "btn btn-primary" href="delete/{{task.id}}"> Update </a></td>
+                            {% if task.status == 0 %}
+                                <td> 
+                                    <button type="button" class="btn btn-primary" id="done_button" onclick="submit_done('{{task.id}}', '{{task.status}}')" value="Done">Done</button>
+                                </td>
+                            {% else %}
+                                <td> 
+                                    <button type="button" class="btn btn-secondary" id="done_button" onclick="submit_done('{{task.id}}', '{{task.status}}')" value="Done">Resume</button>
+                                </td>
+                            {% endif %}
+                            <!-- <td> 
+                                <button type="button" class="btn btn-primary" id="change_state_button">Done</button>
+                            </td> -->
+                            <!-- <td> <a class = "btn btn-primary" href="#"> Update </a></td> -->
                             
                         </tr>
                         {% endfor %}
@@ -66,4 +126,17 @@
     
  </body>
     
+ <script type="text/javascript">
+
+    document.getElementById("filter").onchange = function() {
+        document.getElementById("filter_post").submit();
+    };
+
+    function submit_done(id, state) {
+        document.getElementById("done").value = id;
+        document.getElementById("done_form").submit();
+    }
+
+  </script>
+
 </html>
