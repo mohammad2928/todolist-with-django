@@ -13,6 +13,7 @@ pip install -r requierments.txt
 cd todolist
 python manage.py makemigrations
 python manage.py migrate
+python manage.py createsuperuser --email EMAIL --username USERNAME
 python manage.py runserver 
 ```
 
